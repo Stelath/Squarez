@@ -17,7 +17,9 @@ public class PlayerController : MonoBehaviour
     public LayerMask whatIsGround;
 
     public int extraJumpsValue;
-    private int extraJumps;
+    public float timeInBetweenJumps = 0.5f;
+    private int extraJumps = 1;
+    private float timeOfLastJump = 0f;
 
     public float playerHealth = 100f;
     public ParticleSystem deathEffect;
@@ -57,14 +59,16 @@ public class PlayerController : MonoBehaviour
             extraJumps = extraJumpsValue;
         }
 
-        if (Input.GetAxisRaw("P" + playerNumber + "Vertical") > 0 && extraJumps > 0)
+        if ((Input.GetAxisRaw("P" + playerNumber + "Vertical") > 0) && extraJumps > 0 && ((timeOfLastJump + timeInBetweenJumps) <= Time.time))
         {
             rb.velocity = Vector2.up * jumpForce;
+            timeOfLastJump = Time.time;
             extraJumps--;
         }
-        else if (Input.GetAxisRaw("P" + playerNumber + "Vertical") > 0 && extraJumps == 0 && isGrounded)
+        else if ((Input.GetAxisRaw("P" + playerNumber + "Vertical") > 0) && (extraJumps == 0) && isGrounded)
         {
             rb.velocity = Vector2.up * jumpForce;
+            timeOfLastJump = Time.time;
         }
     }
 

@@ -9,24 +9,39 @@ public class CameraController : MonoBehaviour
 
     public float minSizeY = 10f;
     public float edgeBuffer = 0.75f;
+    public float smoothMoveSpeed = 1f;
+    public float smoothZoomSpeed = 0.125f;
 
     void SetCameraPos()
     {
-        Vector3 sumOfTargetsPos = new Vector3();
+        Vector3 farthestTargetP = new Vector3();
+        Vector3 farthestTargetN = new Vector3();
 
         foreach (Transform target in targets)
         {
-            sumOfTargetsPos = target.position + sumOfTargetsPos;
-            Debug.Log(sumOfTargetsPos);
+            if (farthestTargetP.x < target.position.x)
+            {
+                farthestTargetP = target.position;
+            }
+            else if (farthestTargetN.x > target.position.x)
+            {
+                farthestTargetN = target.position;
+            }
         }
 
-        Vector3 middle = (sumOfTargetsPos) * 0.5f;
+        Vector3 middle = new Vector3();
 
-        camera.transform.position = new Vector3(
-            middle.x,
-            middle.y,
-            camera.transform.position.z
-        );
+        if (targets.Length > 1) {
+            middle = (farthestTargetP + farthestTargetN) * 0.5f;
+        }
+        else if(targets.Length == 1)
+        {
+            middle = targets[0].position;
+        }
+        
+        Vector3 smoothedPosition = Vector3.Lerp(camera.transform.position, middle, smoothMoveSpeed * Time.deltaTime);
+
+        camera.transform.position = new Vector3(smoothedPosition.x, smoothedPosition.y, camera.transform.position.z);
     }
 
     void SetCameraSize()
@@ -61,13 +76,21 @@ public class CameraController : MonoBehaviour
             }
         }
 
-        float width = Mathf.Abs(farthestTargetPX - farthestTargetNX) * edgeBuffer;
-        float height = Mathf.Abs(farthestTargetPY - farthestTargetNY) * edgeBuffer;
+        if (targets.Length > 1)
+        {
+            float width = Mathf.Abs(farthestTargetPX - farthestTargetNX) * edgeBuffer;
+            float height = Mathf.Abs(farthestTargetPY - farthestTargetNY) * edgeBuffer;
 
-        //computing the size
-        float camSizeX = Mathf.Max(width, minSizeX);
-        camera.orthographicSize = Mathf.Max(height,
-            camSizeX * Screen.height / Screen.width, minSizeY);
+            //computing the size
+            float camSizeX = Mathf.Max(width, minSizeX);
+            float targetSize = Mathf.Max(height, camSizeX * Screen.height / Screen.width, minSizeY);
+            camera.orthographicSize = Mathf.Lerp(camera.orthographicSize, targetSize, smoothZoomSpeed * Time.deltaTime);
+        }
+        else
+        {
+            camera.orthographicSize = 10f;
+        }
+        
     }
 
     void Update()

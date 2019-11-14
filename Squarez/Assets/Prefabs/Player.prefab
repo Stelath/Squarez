@@ -182,7 +182,7 @@ MonoBehaviour:
   whatIsGround:
     serializedVersion: 2
     m_Bits: 256
-  extraJumpsValue: 0
+  extraJumpsValue: 1
   playerHealth: 100
   deathEffect: {fileID: 4242103975401701812, guid: 96281075cff38448c9ff46ba78f8f949,
     type: 3}
