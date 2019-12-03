@@ -13,16 +13,18 @@ public class PlayerController : MonoBehaviour
 
     private bool isGrounded;
     public Transform groundCheck;
-    public float checkRadius = 0.5f;
+    public float checkRadius = 1;
     public LayerMask whatIsGround;
 
     public int extraJumpsValue;
     public float timeInBetweenJumps = 0.5f;
     private int extraJumps = 1;
-    private float timeOfLastJump = 0f;
+    private float timeOfLastJump;
 
     public float playerHealth = 100f;
+
     public ParticleSystem deathEffect;
+    public ParticleSystem jumpEffect;
 
     private void Start()
     {
@@ -64,12 +66,21 @@ public class PlayerController : MonoBehaviour
             rb.velocity = Vector2.up * jumpForce;
             timeOfLastJump = Time.time;
             extraJumps--;
+            playJumpEffect();
         }
         else if ((Input.GetAxisRaw("P" + playerNumber + "Vertical") > 0) && (extraJumps == 0) && isGrounded)
         {
             rb.velocity = Vector2.up * jumpForce;
             timeOfLastJump = Time.time;
+            playJumpEffect();
         }
+    }
+
+    public void playJumpEffect()
+    {
+        jumpEffect.startColor = playerColor;
+        ParticleSystem instantiatedJumpEffect = Instantiate(jumpEffect, gameObject.transform.position, gameObject.transform.rotation);
+        Destroy(instantiatedJumpEffect.gameObject, 2f);
     }
 
     public void removeHealth(float amountToBeRemoved)
@@ -90,8 +101,8 @@ public class PlayerController : MonoBehaviour
 
         // Show Player Death Effect
         deathEffect.startColor = playerColor;
-        Instantiate(deathEffect, gameObject.transform.position, gameObject.transform.rotation);
-        Destroy(deathEffect, 2f);
+        ParticleSystem instantiatedDeathEffect = Instantiate(deathEffect, gameObject.transform.position, gameObject.transform.rotation);
+        Destroy(instantiatedDeathEffect.gameObject, 2f);
 
         // Destroy the Player
         Destroy(gameObject);

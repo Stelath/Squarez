@@ -88,7 +88,7 @@ public class CameraController : MonoBehaviour
         }
         else
         {
-            camera.orthographicSize = 10f;
+            camera.orthographicSize = Mathf.Lerp(camera.orthographicSize, 10f, smoothZoomSpeed * Time.deltaTime); ;
         }
         
     }
