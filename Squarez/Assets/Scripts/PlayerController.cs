@@ -61,14 +61,14 @@ public class PlayerController : MonoBehaviour
             extraJumps = extraJumpsValue;
         }
 
-        if ((Input.GetAxisRaw("P" + playerNumber + "Vertical") > 0) && extraJumps > 0 && ((timeOfLastJump + timeInBetweenJumps) <= Time.time))
+        if ((Input.GetAxisRaw("P" + playerNumber + "Jump") > 0) && extraJumps > 0 && ((timeOfLastJump + timeInBetweenJumps) <= Time.time))
         {
             rb.velocity = Vector2.up * jumpForce;
             timeOfLastJump = Time.time;
             extraJumps--;
             playJumpEffect();
         }
-        else if ((Input.GetAxisRaw("P" + playerNumber + "Vertical") > 0) && (extraJumps == 0) && isGrounded)
+        else if ((Input.GetAxisRaw("P" + playerNumber + "Jump") > 0) && (extraJumps == 0) && isGrounded)
         {
             rb.velocity = Vector2.up * jumpForce;
             timeOfLastJump = Time.time;
@@ -83,16 +83,16 @@ public class PlayerController : MonoBehaviour
         Destroy(instantiatedJumpEffect.gameObject, 2f);
     }
 
-    public void removeHealth(float amountToBeRemoved)
+    public void RemoveHealth(float amountToBeRemoved)
     {
         playerHealth = playerHealth - amountToBeRemoved;
         if(playerHealth <= 0f)
         {
-            playerDeath();
+            PlayerDeath();
         }
     }
 
-    public void playerDeath()
+    public void PlayerDeath()
     {
         var targets = Camera.main.GetComponent<CameraController>().targets;
         System.Collections.Generic.List<Transform> listOfTargets = new System.Collections.Generic.List<Transform>(targets);

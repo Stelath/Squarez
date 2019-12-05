@@ -8,7 +8,7 @@ public class LavaController : MonoBehaviour
         if (objectCollidedWith.GetComponent<PlayerController>())
         {
             var playerController = objectCollidedWith.GetComponent<PlayerController>();
-            playerController.playerDeath();
+            playerController.PlayerDeath();
         }
     }
 }

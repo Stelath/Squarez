@@ -1394,6 +1394,7 @@ MonoBehaviour:
   muzzle: {fileID: 299520835}
   playerNumber: 1
   bulletDamage: 20
+  bulletKnockback: 20
   firingForce: 30
   fireRate: 0.2
   muzzleFlashFPS: 30
@@ -1630,6 +1631,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: LMG
+      objectReference: {fileID: 0}
+    - target: {fileID: 7579246376827008492, guid: 3b6a3e1e69a6843e189a688d9a9536c8,
+        type: 3}
+      propertyPath: bulletKnockback
+      value: 20
       objectReference: {fileID: 0}
     - target: {fileID: 7579246376827008494, guid: 3b6a3e1e69a6843e189a688d9a9536c8,
         type: 3}
