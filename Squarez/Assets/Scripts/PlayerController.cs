@@ -1,4 +1,6 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
@@ -21,6 +23,10 @@ public class PlayerController : MonoBehaviour
     private int extraJumps = 1;
     private float timeOfLastJump;
 
+    public GameObject objectInHand;
+    private float handRotationInputX;
+    private float handRotationInputY;
+
     public float playerHealth = 100f;
 
     public ParticleSystem deathEffect;
@@ -38,15 +44,16 @@ public class PlayerController : MonoBehaviour
 
     private void FixedUpdate()
     {
-        handleMovement();
+        HandleMovement();
     }
 
     private void Update()
     {
-        handleJumping();
+        HandleJumping();
+        HandleHandRotation();
     }
 
-    private void handleMovement()
+    private void HandleMovement()
     {
         isGrounded = Physics2D.OverlapCircle(groundCheck.position, checkRadius, whatIsGround);
 
@@ -54,29 +61,53 @@ public class PlayerController : MonoBehaviour
         rb.velocity = new Vector2(moveInput * speed, rb.velocity.y);
     }
 
-    private void handleJumping()
+    private void HandleJumping()
     {
         if (isGrounded)
         {
             extraJumps = extraJumpsValue;
         }
 
-        if ((Input.GetAxisRaw("P" + playerNumber + "Jump") > 0) && extraJumps > 0 && ((timeOfLastJump + timeInBetweenJumps) <= Time.time))
+        if (((-Input.GetAxis("P" + playerNumber + "Vertical") > 0.8) || (Input.GetAxisRaw("P" + playerNumber + "VerticalButton") > 0)) && extraJumps > 0 && ((timeOfLastJump + timeInBetweenJumps) <= Time.time))
         {
             rb.velocity = Vector2.up * jumpForce;
             timeOfLastJump = Time.time;
             extraJumps--;
-            playJumpEffect();
+            PlayJumpEffect();
         }
-        else if ((Input.GetAxisRaw("P" + playerNumber + "Jump") > 0) && (extraJumps == 0) && isGrounded)
+        else if (((-Input.GetAxis("P" + playerNumber + "Vertical") > 0.8) || (Input.GetAxisRaw("P" + playerNumber + "VerticalButton") > 0)) && (extraJumps == 0) && isGrounded)
         {
             rb.velocity = Vector2.up * jumpForce;
             timeOfLastJump = Time.time;
-            playJumpEffect();
+            PlayJumpEffect();
         }
     }
 
-    public void playJumpEffect()
+    public void HandleHandRotation()
+    {
+        handRotationInputX = Input.GetAxis("P" + playerNumber + "HandHorizontal");
+        handRotationInputY = -(Input.GetAxis("P" + playerNumber + "HandVertical"));
+        if (handRotationInputX == 0f && handRotationInputY == 0f && objectInHand != null)
+        {
+            Vector3 curRot = gameObject.transform.localEulerAngles;
+            Vector3 homeRot;
+            if (curRot.z > 180f)
+            {
+                homeRot = new Vector3(0f, 0f, 359.999f);
+            }
+            else
+            {
+                homeRot = Vector3.zero;
+            }
+            objectInHand.transform.localEulerAngles = Vector3.Slerp(curRot, homeRot, Time.deltaTime * 2);
+        }
+        else
+        {
+            objectInHand.transform.localEulerAngles = new Vector3(0f, 0f, (Mathf.Atan2(handRotationInputY, handRotationInputX) * 180 / Mathf.PI) - transform.eulerAngles.z); // this does the actual rotaion according to inputs
+        }
+    }
+
+    public void PlayJumpEffect()
     {
         jumpEffect.startColor = playerColor;
         ParticleSystem instantiatedJumpEffect = Instantiate(jumpEffect, gameObject.transform.position, gameObject.transform.rotation);
@@ -90,6 +121,7 @@ public class PlayerController : MonoBehaviour
         {
             PlayerDeath();
         }
+        //renderer.material.color = Color.white;
     }
 
     public void PlayerDeath()

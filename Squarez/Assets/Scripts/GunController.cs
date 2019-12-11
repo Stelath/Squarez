@@ -13,7 +13,7 @@ public class GunController : MonoBehaviour
     public float firingForce = 30f;
     public float fireRate = 0.5f;
 
-    private float lastTimeFired = Time.time;
+    private float lastTimeFired;
 
     public float muzzleFlashFPS = 30.0f;
     public Texture2D[] frames;
@@ -42,13 +42,13 @@ public class GunController : MonoBehaviour
             bulletFired.GetComponent<BulletController>().bulletKnockback = bulletKnockback;
             bulletFired.GetComponent<Rigidbody2D>().velocity = firingForce * new Vector2(muzzle.right.x, muzzle.right.y);
             lastTimeFired = Time.time;
-            playMuzzleFlash();
+            PlayMuzzleFlash();
 
             Destroy(bulletFired, 2f);
         }
     }
 
-    private void playMuzzleFlash()
+    private void PlayMuzzleFlash()
     {
         InvokeRepeating("NextMuzzleFlashFrame", 0f, (1 / muzzleFlashFPS));
         Invoke("CancelMuzzleFlashInvoke", (1/muzzleFlashFPS) * frames.Length);
@@ -61,7 +61,7 @@ public class GunController : MonoBehaviour
 
     private void NextMuzzleFlashFrame()
     {
-        muzzleFlashMeshRenderer.sharedMaterial.SetTexture("_MainTex", frames[frameIndex]);
+        muzzleFlashMeshRenderer.material.SetTexture("_MainTex", frames[frameIndex]);
         frameIndex = (frameIndex + 1) % frames.Length;
     }
 }
