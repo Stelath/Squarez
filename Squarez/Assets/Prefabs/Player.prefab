@@ -204,6 +204,7 @@ GameObject:
   - component: {fileID: 927726942}
   - component: {fileID: 927726941}
   - component: {fileID: 927726940}
+  - component: {fileID: 1837012078}
   m_Layer: 5
   m_Name: Canvas
   m_TagString: Untagged
@@ -305,6 +306,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   parent: {fileID: 245047829992483545}
   offset: {x: 0, y: 1, z: 0}
+--- !u!225 &1837012078
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 927726938}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!1 &1416671372
 GameObject:
   m_ObjectHideFlags: 0
@@ -315,6 +328,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1416671373}
   - component: {fileID: 1416671374}
+  - component: {fileID: 1923685631}
   m_Layer: 5
   m_Name: Slider
   m_TagString: Untagged
@@ -390,10 +404,48 @@ MonoBehaviour:
   m_MinValue: 0
   m_MaxValue: 1
   m_WholeNumbers: 0
-  m_Value: 0
+  m_Value: 0.32
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls: []
+--- !u!23 &1923685631
+MeshRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1416671372}
+  m_Enabled: 1
+  m_CastShadows: 1
+  m_ReceiveShadows: 1
+  m_DynamicOccludee: 1
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 0}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 3
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
 --- !u!1 &1514051975
 GameObject:
   m_ObjectHideFlags: 0
@@ -623,6 +675,8 @@ MonoBehaviour:
   timeInBetweenJumps: 0.5
   objectInHand: {fileID: 8605568214645556283}
   playerHealth: 100
+  healthBarCanvas: {fileID: 927726938}
+  healthBar: {fileID: 1416671372}
   deathEffect: {fileID: 4242103975401701812, guid: 96281075cff38448c9ff46ba78f8f949,
     type: 3}
   jumpEffect: {fileID: 1778627274452855255, guid: 633e7cc2c0d8c420c8d05390ad846ef8,

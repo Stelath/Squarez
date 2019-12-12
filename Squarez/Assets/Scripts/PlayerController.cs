@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PlayerController : MonoBehaviour
 {
@@ -28,6 +29,8 @@ public class PlayerController : MonoBehaviour
     private float handRotationInputY;
 
     public float playerHealth = 100f;
+    public GameObject healthBarCanvas;
+    public GameObject healthBar;
 
     public ParticleSystem deathEffect;
     public ParticleSystem jumpEffect;
@@ -40,6 +43,8 @@ public class PlayerController : MonoBehaviour
         // Setup Movement Mechanics
         rb = GetComponent<Rigidbody2D>();
         extraJumps = extraJumpsValue;
+
+        healthBarCanvas.GetComponent<CanvasGroup>().alpha = 0;
     }
 
     private void FixedUpdate()
@@ -121,7 +126,35 @@ public class PlayerController : MonoBehaviour
         {
             PlayerDeath();
         }
-        //renderer.material.color = Color.white;
+        StartCoroutine(FlashWhite());
+        StartCoroutine(FadeInHealthBar());
+    }
+
+    IEnumerator FlashWhite()
+    {
+        var spriteRenderer = GetComponent<SpriteRenderer>();
+        spriteRenderer.color = new Color(playerColor.r + 10, playerColor.g + 10, playerColor.b + 10, 1f);
+        yield return new WaitForSeconds(0.1f);
+        spriteRenderer.color = playerColor;
+    }
+
+    IEnumerator FadeInHealthBar()
+    {
+        for(float f = 0.05f; f <= 1; f += 0.05f)
+        {
+            healthBarCanvas.GetComponent<CanvasGroup>().alpha = f;
+            yield return new WaitForSeconds(0.05f);
+        }
+    }
+
+    IEnumerator FadeOutHealthBar()
+    {
+        var rend = GetComponent<Renderer>();
+        for (float f = 0.05f; f >= 0; f -= 0.05f)
+        {
+            healthBarCanvas.GetComponent<CanvasGroup>().alpha = f;
+            yield return new WaitForSeconds(0.05f);
+        }
     }
 
     public void PlayerDeath()
