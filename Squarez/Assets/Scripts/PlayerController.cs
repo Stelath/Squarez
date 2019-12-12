@@ -29,6 +29,7 @@ public class PlayerController : MonoBehaviour
     private float handRotationInputY;
 
     public float playerHealth = 100f;
+    private bool healthBarShown = false;
     public GameObject healthBarCanvas;
     public GameObject healthBar;
 
@@ -122,12 +123,20 @@ public class PlayerController : MonoBehaviour
     public void RemoveHealth(float amountToBeRemoved)
     {
         playerHealth = playerHealth - amountToBeRemoved;
+
         if(playerHealth <= 0f)
         {
             PlayerDeath();
         }
+
         StartCoroutine(FlashWhite());
-        StartCoroutine(FadeInHealthBar());
+
+        if (healthBarShown)
+        {
+            StartCoroutine(DecreaseHelathBar());
+        } else {
+            StartCoroutine(FadeHelathBarInAndOut());
+        }
     }
 
     IEnumerator FlashWhite()
@@ -138,22 +147,44 @@ public class PlayerController : MonoBehaviour
         spriteRenderer.color = playerColor;
     }
 
+    IEnumerator FadeHelathBarInAndOut()
+    {
+        StartCoroutine(FadeInHealthBar());
+        yield return new WaitForSeconds(0.2f);
+        StartCoroutine(DecreaseHelathBar());
+        yield return new WaitForSeconds(0.5f);
+        StartCoroutine(FadeOutHealthBar());
+    }
+
     IEnumerator FadeInHealthBar()
     {
-        for(float f = 0.05f; f <= 1; f += 0.05f)
+        healthBarShown = true;
+        for(float f = 0.05f; f <= 1f; f += 0.05f)
         {
             healthBarCanvas.GetComponent<CanvasGroup>().alpha = f;
-            yield return new WaitForSeconds(0.05f);
+            yield return new WaitForSeconds(0.01f);
         }
     }
 
     IEnumerator FadeOutHealthBar()
     {
-        var rend = GetComponent<Renderer>();
-        for (float f = 0.05f; f >= 0; f -= 0.05f)
+        for (float f = 1f; f >= -0.5; f -= 0.05f)
         {
             healthBarCanvas.GetComponent<CanvasGroup>().alpha = f;
-            yield return new WaitForSeconds(0.05f);
+            yield return new WaitForSeconds(0.01f);
+        }
+        healthBarShown = false;
+    }
+
+    IEnumerator DecreaseHelathBar()
+    {
+        var healthBarSlider = healthBar.GetComponent<Slider>();
+        var waitTime = (healthBarSlider.value - (playerHealth / 100)) * 0.25f;
+
+        for (float i = healthBarSlider.value; i >= (playerHealth/100); i -= 0.05f)
+        {
+            healthBarSlider.value = i;
+            yield return new WaitForSeconds(waitTime);
         }
     }
 
