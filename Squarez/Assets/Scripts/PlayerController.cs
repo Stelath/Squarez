@@ -133,10 +133,10 @@ public class PlayerController : MonoBehaviour
 
         if (healthBarShown)
         {
-            StartCoroutine(DecreaseHelathBar());
-        } else {
-            StartCoroutine(FadeHelathBarInAndOut());
+            StopCoroutine("UpdateHelathBar");
         }
+
+        StartCoroutine("UpdateHelathBar");
     }
 
     IEnumerator FlashWhite()
@@ -147,13 +147,19 @@ public class PlayerController : MonoBehaviour
         spriteRenderer.color = playerColor;
     }
 
-    IEnumerator FadeHelathBarInAndOut()
+    IEnumerator UpdateHelathBar()
     {
-        StartCoroutine(FadeInHealthBar());
-        yield return new WaitForSeconds(0.2f);
-        StartCoroutine(DecreaseHelathBar());
+        if (!healthBarShown)
+        {
+            StopCoroutine("DecreaseHealthBar");
+            StopCoroutine("FadeOutHealthBar");
+            StartCoroutine("FadeInHealthBar");
+            yield return new WaitForSeconds(0.2f);
+        }
+        
+        StartCoroutine("DecreaseHelathBar");
         yield return new WaitForSeconds(0.5f);
-        StartCoroutine(FadeOutHealthBar());
+        StartCoroutine("FadeOutHealthBar");
     }
 
     IEnumerator FadeInHealthBar()
@@ -168,20 +174,20 @@ public class PlayerController : MonoBehaviour
 
     IEnumerator FadeOutHealthBar()
     {
+        healthBarShown = false;
         for (float f = 1f; f >= -0.5; f -= 0.05f)
         {
             healthBarCanvas.GetComponent<CanvasGroup>().alpha = f;
             yield return new WaitForSeconds(0.01f);
         }
-        healthBarShown = false;
     }
 
     IEnumerator DecreaseHelathBar()
     {
         var healthBarSlider = healthBar.GetComponent<Slider>();
-        var waitTime = (healthBarSlider.value - (playerHealth / 100)) * 0.25f;
+        var waitTime = 0.15f / ((healthBarSlider.value - (playerHealth / 100)) / 0.05f) ;
 
-        for (float i = healthBarSlider.value; i >= (playerHealth/100); i -= 0.05f)
+        for (float i = healthBarSlider.value; i >= (playerHealth/100) - 0.05; i -= 0.05f)
         {
             healthBarSlider.value = i;
             yield return new WaitForSeconds(waitTime);
