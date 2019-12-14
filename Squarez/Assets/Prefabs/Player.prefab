@@ -404,7 +404,7 @@ MonoBehaviour:
   m_MinValue: 0
   m_MaxValue: 1
   m_WholeNumbers: 0
-  m_Value: 0.32
+  m_Value: 1
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -667,13 +667,14 @@ MonoBehaviour:
   speed: 20
   jumpForce: 20
   groundCheck: {fileID: 877985619}
-  checkRadius: 0.2
+  checkRadius: 0.3
   whatIsGround:
     serializedVersion: 2
     m_Bits: 256
   extraJumpsValue: 1
-  timeInBetweenJumps: 0.5
+  timeInBetweenJumps: 0.4
   objectInHand: {fileID: 8605568214645556283}
+  reachRadius: 3
   playerHealth: 100
   healthBarCanvas: {fileID: 927726938}
   healthBar: {fileID: 1416671372}

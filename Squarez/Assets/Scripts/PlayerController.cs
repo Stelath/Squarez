@@ -16,15 +16,16 @@ public class PlayerController : MonoBehaviour
 
     private bool isGrounded;
     public Transform groundCheck;
-    public float checkRadius = 1;
+    public float checkRadius = 0.3f;
     public LayerMask whatIsGround;
 
     public int extraJumpsValue;
-    public float timeInBetweenJumps = 0.5f;
+    public float timeInBetweenJumps = 0.4f;
     private int extraJumps = 1;
     private float timeOfLastJump;
 
     public GameObject objectInHand;
+    public float reachRadius = 2;
     private float handRotationInputX;
     private float handRotationInputY;
 
@@ -57,6 +58,7 @@ public class PlayerController : MonoBehaviour
     {
         HandleJumping();
         HandleHandRotation();
+        HandleHandItem();
     }
 
     private void HandleMovement()
@@ -93,23 +95,68 @@ public class PlayerController : MonoBehaviour
     {
         handRotationInputX = Input.GetAxis("P" + playerNumber + "HandHorizontal");
         handRotationInputY = -(Input.GetAxis("P" + playerNumber + "HandVertical"));
-        if (handRotationInputX == 0f && handRotationInputY == 0f && objectInHand != null)
+        if (objectInHand != null)
         {
-            Vector3 curRot = gameObject.transform.localEulerAngles;
-            Vector3 homeRot;
-            if (curRot.z > 180f)
+            if (handRotationInputX == 0f && handRotationInputY == 0f)
             {
-                homeRot = new Vector3(0f, 0f, 359.999f);
+                Vector3 curRot = gameObject.transform.localEulerAngles;
+                Vector3 homeRot;
+                if (curRot.z > 180f)
+                {
+                    homeRot = new Vector3(0f, 0f, 359.999f);
+                }
+                else
+                {
+                    homeRot = Vector3.zero;
+                }
+                objectInHand.transform.localEulerAngles = Vector3.Slerp(curRot, homeRot, Time.deltaTime * 2);
             }
             else
             {
-                homeRot = Vector3.zero;
+                objectInHand.transform.localEulerAngles = new Vector3(0f, 0f, (Mathf.Atan2(handRotationInputY, handRotationInputX) * 180 / Mathf.PI) - transform.eulerAngles.z); // this does the actual rotaion according to inputs
             }
-            objectInHand.transform.localEulerAngles = Vector3.Slerp(curRot, homeRot, Time.deltaTime * 2);
         }
-        else
+    }
+
+    public void HandleHandItem()
+    {
+        if (objectInHand != null && (Input.GetAxisRaw("P" + playerNumber + "Drop") > 0))
         {
-            objectInHand.transform.localEulerAngles = new Vector3(0f, 0f, (Mathf.Atan2(handRotationInputY, handRotationInputX) * 180 / Mathf.PI) - transform.eulerAngles.z); // this does the actual rotaion according to inputs
+            var droppedGun = Instantiate(objectInHand, objectInHand.transform.position, objectInHand.transform.rotation);
+            droppedGun.AddComponent<Rigidbody2D>();
+            droppedGun.AddComponent<PolygonCollider2D>();
+            droppedGun.GetComponent<GunController>().canFire = false;
+            droppedGun.GetComponent<Rigidbody2D>().velocity = 5 * new Vector2(objectInHand.transform.right.x, objectInHand.transform.right.y);
+            Destroy(objectInHand);
+        }
+
+        if (objectInHand == null && (Input.GetAxisRaw("P" + playerNumber + "Grab") > 0))
+        {
+            Collider2D[] objectsNearPlayer = Physics2D.OverlapCircleAll(new Vector2(transform.position.x, transform.position.y), reachRadius);
+            GameObject closestObject = null;
+            var closestObjectDistance = reachRadius + 1f;
+
+            foreach (var grabbableObject in objectsNearPlayer)
+            {
+                var distanceToObject = Vector3.Distance(gameObject.transform.position, grabbableObject.gameObject.transform.position);
+                if ((grabbableObject.gameObject.GetComponent<GunController>() != null) && (distanceToObject < closestObjectDistance))
+                {
+                    closestObject = grabbableObject.gameObject;
+                    closestObjectDistance = distanceToObject;
+                }
+            }
+
+            if (closestObject != null)
+            {
+                objectInHand = Instantiate(closestObject, gameObject.transform);
+                objectInHand.transform.position = transform.position;
+                objectInHand.GetComponent<GunController>().canFire = true;
+                objectInHand.GetComponent<GunController>().playerNumber = playerNumber;
+
+                Destroy(objectInHand.GetComponent<Rigidbody2D>());
+                Destroy(objectInHand.GetComponent<PolygonCollider2D>());
+                Destroy(closestObject);
+            }
         }
     }
 
