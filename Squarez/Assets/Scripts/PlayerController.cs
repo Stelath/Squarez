@@ -8,6 +8,8 @@ public class PlayerController : MonoBehaviour
     public Color playerColor;
     public int playerNumber = 1;
 
+    public bool disabled = false;
+
     public float speed = 20f;
     public float jumpForce = 20f;
 
@@ -51,14 +53,20 @@ public class PlayerController : MonoBehaviour
 
     private void FixedUpdate()
     {
-        HandleMovement();
+        if (!disabled)
+        {
+            HandleMovement();
+        }
     }
 
     private void Update()
     {
-        HandleJumping();
-        HandleHandRotation();
-        HandleHandItem();
+        if (!disabled)
+        {
+            HandleJumping();
+            HandleHandRotation();
+            HandleHandItem();
+        }
     }
 
     private void HandleMovement()
@@ -89,6 +97,13 @@ public class PlayerController : MonoBehaviour
             timeOfLastJump = Time.time;
             PlayJumpEffect();
         }
+    }
+
+    public void PlayJumpEffect()
+    {
+        jumpEffect.startColor = playerColor;
+        ParticleSystem instantiatedJumpEffect = Instantiate(jumpEffect, gameObject.transform.position, gameObject.transform.rotation);
+        Destroy(instantiatedJumpEffect.gameObject, 2f);
     }
 
     public void HandleHandRotation()
@@ -158,13 +173,6 @@ public class PlayerController : MonoBehaviour
                 Destroy(closestObject);
             }
         }
-    }
-
-    public void PlayJumpEffect()
-    {
-        jumpEffect.startColor = playerColor;
-        ParticleSystem instantiatedJumpEffect = Instantiate(jumpEffect, gameObject.transform.position, gameObject.transform.rotation);
-        Destroy(instantiatedJumpEffect.gameObject, 2f);
     }
 
     public void RemoveHealth(float amountToBeRemoved)
@@ -243,6 +251,7 @@ public class PlayerController : MonoBehaviour
 
     public void PlayerDeath()
     {
+
         var targets = Camera.main.GetComponent<CameraController>().targets;
         System.Collections.Generic.List<Transform> listOfTargets = new System.Collections.Generic.List<Transform>(targets);
         listOfTargets.Remove(gameObject.transform);
@@ -252,6 +261,20 @@ public class PlayerController : MonoBehaviour
         deathEffect.startColor = playerColor;
         ParticleSystem instantiatedDeathEffect = Instantiate(deathEffect, gameObject.transform.position, gameObject.transform.rotation);
         Destroy(instantiatedDeathEffect.gameObject, 2f);
+
+        var gameControllerScript = GameObject.FindGameObjectWithTag("GameController").GetComponent<GameController>();
+
+        var livingPlayers = new GameObject[gameControllerScript.players.Length - 1];
+        var i = 0;
+        foreach (var player in gameControllerScript.players)
+        {
+            if (player != gameObject)
+            {
+                livingPlayers[i] = player;
+                i++;
+            }
+        }
+        gameControllerScript.players = livingPlayers;
 
         // Destroy the Player
         Destroy(gameObject);

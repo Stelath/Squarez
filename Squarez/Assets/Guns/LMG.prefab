@@ -192,9 +192,11 @@ MonoBehaviour:
   muzzle: {fileID: 8361929973420061681}
   playerNumber: 1
   bulletDamage: 20
+  bulletSpread: 0.03
   bulletKnockback: 20
   firingForce: 30
   fireRate: 0.2
+  canFire: 1
   muzzleFlashFPS: 30
   frames:
   - {fileID: 2800000, guid: b903492db4e935f42b0048b5be61efca, type: 3}

@@ -7,6 +7,12 @@ public class BulletController : MonoBehaviour
     public float bulletDamage;
     public float bulletKnockback;
 
+    void Update()
+    {
+        var velocity = GetComponent<Rigidbody2D>().velocity;
+        transform.rotation.SetLookRotation(new Vector3(velocity.x, velocity.y, 0f));
+    }
+
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.GetComponent<PlayerController>() != null)
