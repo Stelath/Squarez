@@ -9,6 +9,7 @@ public class GunController : MonoBehaviour
     public int playerNumber = 1;
 
     public float bulletDamage = 20f;
+    public float bulletSpread = 0.03f;
     public float bulletKnockback = 5f;
     public float firingForce = 30f;
     public float fireRate = 0.5f;
@@ -41,11 +42,11 @@ public class GunController : MonoBehaviour
             var bulletFired = Instantiate(bullet, muzzle.position, muzzle.rotation);
             bulletFired.GetComponent<BulletController>().bulletDamage = bulletDamage;
             bulletFired.GetComponent<BulletController>().bulletKnockback = bulletKnockback;
-            bulletFired.GetComponent<Rigidbody2D>().velocity = firingForce * new Vector2(muzzle.right.x, muzzle.right.y);
+            bulletFired.GetComponent<Rigidbody2D>().velocity = firingForce * new Vector2(muzzle.right.x, muzzle.right.y - Random.Range(-bulletSpread, bulletSpread));
             lastTimeFired = Time.time;
             PlayMuzzleFlash();
 
-            Destroy(bulletFired, 2f);
+            Destroy(bulletFired, 10f);
         }
     }
 

@@ -1,8 +1,8 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
-<<<<<<< HEAD
 public class GameController : MonoBehaviour
 {
     public GameObject[] levels;
@@ -13,25 +13,28 @@ public class GameController : MonoBehaviour
     private List<GameObject> activeGuns = new List<GameObject>();
 
     [HideInInspector] public Transform[] playerSpawns;
-=======
-public class GameController : MonoBehaviour
-{
-    public Transform[] playerSpawns;
->>>>>>> aa2f2159b69d2f9d2f7e8483340c9e73dc9c4f7e
     public Color[] playerColors;
     public int amountOfPlayers = 2;
+    public ParticleSystem spawnEffect;
 
     public Camera mainCamera;
     public GameObject player;
 
-    private GameObject[] players;
+    [HideInInspector] public GameObject[] players;
+
+    public GameObject roundEndCanvas;
+    public GameObject roundEndText;
+    private string winText = "";
+    private bool roundOver = false;
+
+    public int scoreNeededToWin = 6;
+    private int[] scores;
 
     public GameObject sceneChanger;
 
     // Start is called before the first frame update
     void Start()
     {
-<<<<<<< HEAD
         amountOfPlayers = DataPasser.playerCount;
         scoreNeededToWin = DataPasser.roundsToWin;
 
@@ -127,14 +130,18 @@ public class GameController : MonoBehaviour
 
     public void SpawnPlayers()
     {
-=======
->>>>>>> aa2f2159b69d2f9d2f7e8483340c9e73dc9c4f7e
         players = new GameObject[amountOfPlayers];
         for (int i = 0; i < amountOfPlayers; i++)
         {
             players[i] = Instantiate(player, playerSpawns[i].position, playerSpawns[i].rotation);
-            players[i].GetComponent<PlayerController>().playerNumber = i + 1;
-            players[i].GetComponent<PlayerController>().playerColor = playerColors[i];
+            var instantiatedSpawnEffect = Instantiate(spawnEffect, players[i].transform.position, players[i].transform.rotation);
+            instantiatedSpawnEffect.startColor = playerColors[i];
+            Destroy(instantiatedSpawnEffect.gameObject, 2f);
+
+            var playerController = players[i].GetComponent<PlayerController>();
+            playerController.playerNumber = i + 1;
+            playerController.playerColor = playerColors[i];
+            playerController.disabled = true;
         }
 
         Transform[] playerTargets = new Transform[amountOfPlayers];
@@ -145,7 +152,6 @@ public class GameController : MonoBehaviour
         mainCamera.GetComponent<CameraController>().targets = playerTargets;
     }
 
-<<<<<<< HEAD
     private void HandleRoundOver()
     {
         if (players.Length <= 1 && !(roundOver))
@@ -271,11 +277,11 @@ public class GameController : MonoBehaviour
     }
 
     IEnumerator FadeOutRoundEndText()
-=======
-    // Update is called once per frame
-    void Update()
->>>>>>> aa2f2159b69d2f9d2f7e8483340c9e73dc9c4f7e
     {
-        
+        for (float f = 1f; f >= -0.5; f -= 0.05f)
+        {
+            roundEndCanvas.GetComponent<CanvasGroup>().alpha = f;
+            yield return new WaitForSeconds(0.05f);
+        }
     }
 }
