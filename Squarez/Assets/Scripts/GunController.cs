@@ -4,13 +4,17 @@ using UnityEngine;
 
 public class GunController : MonoBehaviour
 {
+    public GameObject player;
+
     public GameObject bullet;
     public Transform muzzle;
     public int playerNumber = 1;
 
     public float bulletDamage = 20f;
     public float bulletSpread = 0.03f;
+    public float amountOfBullets = 1f;
     public float bulletKnockback = 5f;
+    public float recoil = 5f;
     public float firingForce = 30f;
     public float fireRate = 0.5f;
     public bool canFire = true;
@@ -39,14 +43,20 @@ public class GunController : MonoBehaviour
     {
         if ((Input.GetAxis("P" + playerNumber + "Fire") > 0) && (fireRate <= (Time.time - lastTimeFired)) && canFire)
         {
-            var bulletFired = Instantiate(bullet, muzzle.position, muzzle.rotation);
-            bulletFired.GetComponent<BulletController>().bulletDamage = bulletDamage;
-            bulletFired.GetComponent<BulletController>().bulletKnockback = bulletKnockback;
-            bulletFired.GetComponent<Rigidbody2D>().velocity = firingForce * new Vector2(muzzle.right.x, muzzle.right.y - Random.Range(-bulletSpread, bulletSpread));
+            for (var i = 0; i < amountOfBullets; i++)
+            {
+                var bulletFired = Instantiate(bullet, muzzle.position, muzzle.rotation);
+                bulletFired.GetComponent<BulletController>().bulletDamage = bulletDamage;
+                bulletFired.GetComponent<BulletController>().bulletKnockback = bulletKnockback;
+                bulletFired.GetComponent<Rigidbody2D>().velocity = firingForce * new Vector2(muzzle.right.x, muzzle.right.y - Random.Range(-bulletSpread, bulletSpread));
+
+                Destroy(bulletFired, 10f);
+            }
+
+            player.GetComponent<Rigidbody2D>().velocity = player.GetComponent<Rigidbody2D>().velocity + (recoil * new Vector2 (muzzle.right.x, muzzle.right.y));
+            
             lastTimeFired = Time.time;
             PlayMuzzleFlash();
-
-            Destroy(bulletFired, 10f);
         }
     }
 

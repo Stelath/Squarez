@@ -24,6 +24,9 @@ public class BulletController : MonoBehaviour
 
         }
 
-        Destroy(gameObject);
+        if (collision.GetComponent<BulletController>() == null)
+        {
+            Destroy(gameObject);
+        }
     }
 }

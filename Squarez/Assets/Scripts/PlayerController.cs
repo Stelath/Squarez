@@ -167,6 +167,7 @@ public class PlayerController : MonoBehaviour
                 objectInHand.transform.position = transform.position;
                 objectInHand.GetComponent<GunController>().canFire = true;
                 objectInHand.GetComponent<GunController>().playerNumber = playerNumber;
+                objectInHand.GetComponent<GunController>().player = gameObject;
 
                 Destroy(objectInHand.GetComponent<Rigidbody2D>());
                 Destroy(objectInHand.GetComponent<PolygonCollider2D>());
