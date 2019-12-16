@@ -755,6 +755,9 @@ MonoBehaviour:
   - {fileID: 877182142927902506, guid: 8a7cc534c65ddd24a98e667d16f5fb75, type: 3}
   guns:
   - {fileID: 8361929973172294562, guid: 2e6e2d989c93a4d10a07d052bd245f51, type: 3}
+  - {fileID: 4970373633277607905, guid: 27e12526bb14ffc45beed2ecc0f90149, type: 3}
+  - {fileID: 3653531698725213251, guid: 125690bb94496bd4dbf90f3b0f9c1bc8, type: 3}
+  - {fileID: 6487742167609703756, guid: a1b8ddc318bf27f438d0fd0af8487365, type: 3}
   playerSpawns: []
   playerColors:
   - {r: 0.29411766, g: 0.54901963, b: 1, a: 1}

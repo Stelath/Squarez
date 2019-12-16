@@ -5,7 +5,6 @@ using UnityEngine;
 public class BulletController : MonoBehaviour
 {
     public float bulletDamage;
-    public float bulletKnockback;
 
     void Update()
     {
@@ -19,9 +18,6 @@ public class BulletController : MonoBehaviour
         {
             var player = collision.GetComponent<PlayerController>();
             player.RemoveHealth(bulletDamage);
-
-            //player.GetComponent<Rigidbody2D>().velocity = player.GetComponent<Rigidbody2D>().velocity + (bulletKnockback * new Vector2(gameObject.transform.forward.x, gameObject.transform.forward.y));
-
         }
 
         if (collision.GetComponent<BulletController>() == null)

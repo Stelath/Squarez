@@ -97,15 +97,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 79fbe8cef29b44d32963a8aa6e162a33, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  player: {fileID: 0}
   bullet: {fileID: 1047787570282570419, guid: bb47320c90dacdb44aaa872fd1945842, type: 3}
   muzzle: {fileID: 3653531699559658512}
   playerNumber: 1
   bulletDamage: 10
   bulletSpread: 0.01
   amountOfBullets: 6
-  bulletKnockback: 20
-  recoil: 10
-  firingForce: 30
+  firingForce: 35
   fireRate: 1
   canFire: 1
   muzzleFlashFPS: 30

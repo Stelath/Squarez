@@ -30,6 +30,7 @@ public class PlayerController : MonoBehaviour
     public float reachRadius = 2;
     private float handRotationInputX;
     private float handRotationInputY;
+    private Vector3 lastHandRotation = Vector3.zero;
 
     public float playerHealth = 100f;
     private bool healthBarShown = false;
@@ -84,14 +85,14 @@ public class PlayerController : MonoBehaviour
             extraJumps = extraJumpsValue;
         }
 
-        if (((-Input.GetAxis("P" + playerNumber + "Vertical") > 0.8) || (Input.GetAxisRaw("P" + playerNumber + "VerticalButton") > 0)) && extraJumps > 0 && ((timeOfLastJump + timeInBetweenJumps) <= Time.time))
+        if (((Input.GetAxis("P" + playerNumber + "Vertical") > 0.8) || (Input.GetAxisRaw("P" + playerNumber + "VerticalButton") > 0)) && extraJumps > 0 && ((timeOfLastJump + timeInBetweenJumps) <= Time.time))
         {
             rb.velocity = Vector2.up * jumpForce;
             timeOfLastJump = Time.time;
             extraJumps--;
             PlayJumpEffect();
         }
-        else if (((-Input.GetAxis("P" + playerNumber + "Vertical") > 0.8) || (Input.GetAxisRaw("P" + playerNumber + "VerticalButton") > 0)) && (extraJumps == 0) && isGrounded)
+        else if (((Input.GetAxis("P" + playerNumber + "Vertical") > 0.8) || (Input.GetAxisRaw("P" + playerNumber + "VerticalButton") > 0)) && (extraJumps == 0) && isGrounded)
         {
             rb.velocity = Vector2.up * jumpForce;
             timeOfLastJump = Time.time;
@@ -109,26 +110,19 @@ public class PlayerController : MonoBehaviour
     public void HandleHandRotation()
     {
         handRotationInputX = Input.GetAxis("P" + playerNumber + "HandHorizontal");
-        handRotationInputY = -(Input.GetAxis("P" + playerNumber + "HandVertical"));
+        handRotationInputY = Input.GetAxis("P" + playerNumber + "HandVertical");
+        
         if (objectInHand != null)
         {
             if (handRotationInputX == 0f && handRotationInputY == 0f)
             {
                 Vector3 curRot = gameObject.transform.localEulerAngles;
-                Vector3 homeRot;
-                if (curRot.z > 180f)
-                {
-                    homeRot = new Vector3(0f, 0f, 359.999f);
-                }
-                else
-                {
-                    homeRot = Vector3.zero;
-                }
-                objectInHand.transform.localEulerAngles = Vector3.Slerp(curRot, homeRot, Time.deltaTime * 2);
+                objectInHand.transform.localEulerAngles = new Vector3(0f, 0f, lastHandRotation.z - curRot.z);
             }
             else
             {
-                objectInHand.transform.localEulerAngles = new Vector3(0f, 0f, (Mathf.Atan2(handRotationInputY, handRotationInputX) * 180 / Mathf.PI) - transform.eulerAngles.z); // this does the actual rotaion according to inputs
+                objectInHand.transform.localEulerAngles = new Vector3(0f, 0f, (Mathf.Atan2(handRotationInputY, handRotationInputX) * 180 / Mathf.PI) - transform.eulerAngles.z);
+                lastHandRotation = new Vector3(0f, 0f, (Mathf.Atan2(handRotationInputY, handRotationInputX) * 180 / Mathf.PI));
             }
         }
     }
