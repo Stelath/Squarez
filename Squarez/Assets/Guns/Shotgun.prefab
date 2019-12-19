@@ -101,11 +101,11 @@ MonoBehaviour:
   bullet: {fileID: 1047787570282570419, guid: bb47320c90dacdb44aaa872fd1945842, type: 3}
   muzzle: {fileID: 3653531699559658512}
   playerNumber: 1
-  bulletDamage: 10
-  bulletSpread: 0.01
-  amountOfBullets: 6
+  bulletDamage: 15
+  bulletSpread: 0.07
+  amountOfBullets: 8
   firingForce: 35
-  fireRate: 1
+  fireRate: 0.75
   canFire: 1
   muzzleFlashFPS: 30
   frames:

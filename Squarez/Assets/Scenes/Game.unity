@@ -753,15 +753,21 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   levels:
   - {fileID: 877182142927902506, guid: 8a7cc534c65ddd24a98e667d16f5fb75, type: 3}
+  - {fileID: 2302418044622293816, guid: 91bea60e76d25486ab86961f778111ae, type: 3}
+  - {fileID: 6627971936660528298, guid: 352b7194e05434c638dd2c5e5d15e5e8, type: 3}
+  - {fileID: 6158841760904881681, guid: bccba24598ce4443b8bdef157f7d0846, type: 3}
   guns:
   - {fileID: 8361929973172294562, guid: 2e6e2d989c93a4d10a07d052bd245f51, type: 3}
   - {fileID: 4970373633277607905, guid: 27e12526bb14ffc45beed2ecc0f90149, type: 3}
   - {fileID: 3653531698725213251, guid: 125690bb94496bd4dbf90f3b0f9c1bc8, type: 3}
   - {fileID: 6487742167609703756, guid: a1b8ddc318bf27f438d0fd0af8487365, type: 3}
+  activeGuns: []
   playerSpawns: []
   playerColors:
   - {r: 0.29411766, g: 0.54901963, b: 1, a: 1}
   - {r: 1, g: 0.61489314, b: 0.1273585, a: 1}
+  - {r: 0.053106308, g: 1, b: 0, a: 1}
+  - {r: 1, g: 0.20042132, b: 0, a: 1}
   amountOfPlayers: 2
   spawnEffect: {fileID: 4454254240309296220, guid: 3aa62d485000d7746a4e872db7b40d21,
     type: 3}

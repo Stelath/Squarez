@@ -24,7 +24,7 @@ public class UIEventHandler : MonoBehaviour
     
     public void DecreaseRoundsToWinButton()
     {
-        if (int.Parse(roundsToWin.GetComponent<Text>().text) > 0)
+        if (int.Parse(roundsToWin.GetComponent<Text>().text) > 1)
         {
             roundsToWin.GetComponent<Text>().text = (int.Parse(roundsToWin.GetComponent<Text>().text) - 1).ToString();
         }

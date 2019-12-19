@@ -60,13 +60,13 @@ public class PlayerController : MonoBehaviour
         }
     }
 
+    // Parent algorithm
     private void Update()
     {
         if (!disabled)
         {
             HandleJumping();
-            HandleHandRotation();
-            HandleHandItem();
+            HandleHand();
         }
     }
 
@@ -87,31 +87,38 @@ public class PlayerController : MonoBehaviour
 
         if (((Input.GetAxis("P" + playerNumber + "Vertical") > 0.8) || (Input.GetAxisRaw("P" + playerNumber + "VerticalButton") > 0)) && extraJumps > 0 && ((timeOfLastJump + timeInBetweenJumps) <= Time.time))
         {
-            rb.velocity = Vector2.up * jumpForce;
-            timeOfLastJump = Time.time;
+            Jump();
             extraJumps--;
-            PlayJumpEffect();
         }
         else if (((Input.GetAxis("P" + playerNumber + "Vertical") > 0.8) || (Input.GetAxisRaw("P" + playerNumber + "VerticalButton") > 0)) && (extraJumps == 0) && isGrounded)
         {
-            rb.velocity = Vector2.up * jumpForce;
-            timeOfLastJump = Time.time;
-            PlayJumpEffect();
+            Jump();
         }
     }
 
-    public void PlayJumpEffect()
+    public void Jump()
     {
+        rb.velocity = Vector2.up * jumpForce;
+        timeOfLastJump = Time.time;
         jumpEffect.startColor = playerColor;
         ParticleSystem instantiatedJumpEffect = Instantiate(jumpEffect, gameObject.transform.position, gameObject.transform.rotation);
         Destroy(instantiatedJumpEffect.gameObject, 2f);
     }
 
+
+    // Parent Algorithm
+    private void HandleHand()
+    {
+        HandleHandRotation();
+        HandleHandItem();
+    }
+
+    // Child Algorithm - 1
     public void HandleHandRotation()
     {
         handRotationInputX = Input.GetAxis("P" + playerNumber + "HandHorizontal");
         handRotationInputY = Input.GetAxis("P" + playerNumber + "HandVertical");
-        
+
         if (objectInHand != null)
         {
             if (handRotationInputX == 0f && handRotationInputY == 0f)
@@ -127,6 +134,7 @@ public class PlayerController : MonoBehaviour
         }
     }
 
+    // Child Algorithm - 2
     public void HandleHandItem()
     {
         if (objectInHand != null && (Input.GetAxisRaw("P" + playerNumber + "Drop") > 0))
@@ -136,6 +144,9 @@ public class PlayerController : MonoBehaviour
             droppedGun.AddComponent<PolygonCollider2D>();
             droppedGun.GetComponent<GunController>().canFire = false;
             droppedGun.GetComponent<Rigidbody2D>().velocity = 5 * new Vector2(objectInHand.transform.right.x, objectInHand.transform.right.y);
+
+            GameObject.FindGameObjectWithTag("GameController").GetComponent<GameController>().activeGuns.Add(droppedGun);
+
             Destroy(objectInHand);
         }
 
