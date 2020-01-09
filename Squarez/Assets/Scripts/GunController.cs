@@ -39,7 +39,7 @@ public class GunController : MonoBehaviour
 
     private void Fire()
     {
-        if ((Input.GetAxis("P" + playerNumber + "Fire") > 0) && (fireRate <= (Time.time - lastTimeFired)) && canFire)
+        if ((Input.GetAxis("P" + playerNumber + "Fire") > 0) || (Input.GetAxis("Fire") > 0 && playerNumber == 1) && (fireRate <= (Time.time - lastTimeFired)) && canFire)
         {
             for (var i = 0; i < amountOfBullets; i++)
             {
