@@ -71,7 +71,7 @@ namespace Microsoft.Xbox.Services.Client
                     };
                     this.CurrentPlayers.Add(playerNumber, newPlayerInfo);
                 }
-
+                
 #if ENABLE_WINMD_SUPPORT
             var playerInfo = this.CurrentPlayers[playerNumber];
             if (this.GetMaximumNumberOfPlayers() > 1)
@@ -238,7 +238,7 @@ namespace Microsoft.Xbox.Services.Client
         /// <returns>True if callback was added successfully, false otherwise.</returns>
         public bool OnPlayerSignIn(int playerNumber, UnityAction<XboxLiveUser, XboxLiveAuthStatus, string> callback)
         {
-            if (AddCallbackHelper(playerNumber, "OnPlayerSignIn")
+            if (AddCallbackHelper(playerNumber, "OnPlayerSignIn") 
                 && !this.CurrentPlayers[playerNumber].SignInCallbacks.Contains(callback))
             {
                 this.CurrentPlayers[playerNumber].SignInCallbacks.Add(callback);
@@ -261,7 +261,7 @@ namespace Microsoft.Xbox.Services.Client
         {
             if (AddCallbackHelper(playerNumber, "OnPlayerSignOut")
                 && !this.CurrentPlayers[playerNumber].SignOutCallbacks.Contains(callback))
-            {
+            { 
                 this.CurrentPlayers[playerNumber].SignOutCallbacks.Add(callback);
                 return true;
             }
@@ -338,8 +338,7 @@ namespace Microsoft.Xbox.Services.Client
         /// - A string which will contain the error message if sign out failed.</param>
         public void RemoveCallbackFromAllPlayers(UnityAction<XboxLiveUser, XboxLiveAuthStatus, string> callback)
         {
-            foreach (var playerNumber in this.GetCurrentPlayers().Keys)
-            {
+            foreach (var playerNumber in this.GetCurrentPlayers().Keys) {
                 this.RemoveCallbackFromPlayer(playerNumber, callback);
             }
         }
@@ -419,9 +418,8 @@ namespace Microsoft.Xbox.Services.Client
         {
             if (ValidatePlayerNumber(playerNumber, "Get Xbox Live Context", XboxLiveOperationType.GetUser))
             {
-                if (this.CurrentPlayers[playerNumber].XboxLiveContext == null)
-                {
-                    this.CurrentPlayers[playerNumber].XboxLiveContext = new XboxLiveContext(this.CurrentPlayers[playerNumber].XboxLiveUser);
+                if (this.CurrentPlayers[playerNumber].XboxLiveContext == null) {
+                    this.CurrentPlayers[playerNumber].XboxLiveContext =  new XboxLiveContext(this.CurrentPlayers[playerNumber].XboxLiveUser);
                 }
 
                 return this.CurrentPlayers[playerNumber].XboxLiveContext;
@@ -441,7 +439,7 @@ namespace Microsoft.Xbox.Services.Client
                 ExceptionManager.Instance.ThrowException(
                                         ExceptionSource.SignInManager,
                                         ExceptionType.NoPlayersAreSignedIn,
-                                        new Exception(errorMessage));
+                                        new Exception (errorMessage));
                 return false;
             }
 

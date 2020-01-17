@@ -557,13 +557,13 @@ PlayerSettings:
     Windows Store Apps: 3
   m_RenderingPath: 1
   m_MobileRenderingPath: 1
-  metroPackageName: 
+  metroPackageName: 52217Stelath.Squarez
   metroPackageVersion: 0.3.8.1
   metroCertificatePath: Assets/WSATestCertificate.pfx
   metroCertificatePassword: Izmb=>?-
   metroCertificateSubject: Stelath
   metroCertificateIssuer: Stelath
-  metroCertificateNotAfter: 8045296afbdcd601
+  metroCertificateNotAfter: 00cfa31792ecd601
   metroApplicationDescription: A Game Where You Fight as Squarez
   wsaImages:
     65636: Assets/Images/AppIcon/StoreLogo.scale100.png
