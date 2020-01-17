@@ -64,7 +64,7 @@ public class GameController : MonoBehaviour
     IEnumerator HandleGunSpawns()
     {
         var droppedGunForPlayer = -1;
-        for (var i = 0; i < players.Length;)
+        for (var i = 0; i < 2;)
         {
             var playerToDropGunOn = Random.Range(0, players.Length);
             if (playerToDropGunOn != droppedGunForPlayer)
@@ -78,15 +78,13 @@ public class GameController : MonoBehaviour
 
         }
 
-        while (!roundOver)
+        while (true)
         {
-            yield return new WaitForSeconds(Random.Range(10, 20));
+            yield return new WaitForSeconds(Random.Range(15, 25));
             var gun = Instantiate(guns[Random.Range(0, guns.Length)], new Vector3(players[Random.Range(0, players.Length)].transform.position.x + Random.Range(-3, 3), 20, 0), transform.rotation);
             gun.GetComponent<GunController>().canFire = false;
             activeGuns.Add(gun);
         }
-
-        StopCoroutine("HandleGunSpawns");
     }
 
     IEnumerator StartRound()
@@ -222,6 +220,8 @@ public class GameController : MonoBehaviour
 
     IEnumerator RoundOver()
     {
+        StopCoroutine("HandleGunSpawns");
+
         currentLevelNumber = Random.Range(0, levels.Length);
 
         roundEndText.GetComponent<Text>().text = winText;
@@ -234,6 +234,11 @@ public class GameController : MonoBehaviour
         if (players.Length == 1)
         {
             players[0].GetComponent<PlayerController>().PlayerDeath();
+        }
+
+        foreach (var bullet in GameObject.FindGameObjectsWithTag("Bullet"))
+        {
+            Destroy(bullet);
         }
 
         foreach (var gun in activeGuns.ToArray())

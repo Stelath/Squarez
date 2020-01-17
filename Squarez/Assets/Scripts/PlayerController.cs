@@ -173,6 +173,9 @@ public class PlayerController : MonoBehaviour
             droppedGun.GetComponent<GunController>().canFire = false;
             droppedGun.GetComponent<Rigidbody2D>().velocity = 5 * new Vector2(objectInHand.transform.right.x, objectInHand.transform.right.y);
 
+            var droppedGunMFFrames = droppedGun.GetComponent<GunController>().frames;
+            droppedGun.GetComponent<GunController>().muzzleFlashMeshRenderer.material.SetTexture("_MainTex", droppedGunMFFrames[droppedGunMFFrames.Length - 1]);
+
             GameObject.FindGameObjectWithTag("GameController").GetComponent<GameController>().activeGuns.Add(droppedGun);
 
             Destroy(objectInHand);

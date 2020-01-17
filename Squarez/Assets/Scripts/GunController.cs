@@ -24,7 +24,7 @@ public class GunController : MonoBehaviour
     public GameObject muzzleFlash;
 
     private int frameIndex;
-    private MeshRenderer muzzleFlashMeshRenderer;
+    public MeshRenderer muzzleFlashMeshRenderer;
 
     private void Start()
     {
