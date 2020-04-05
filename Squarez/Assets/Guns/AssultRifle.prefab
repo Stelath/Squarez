@@ -136,7 +136,7 @@ MonoBehaviour:
   amountOfBullets: 1
   firingForce: 37
   fireRate: 0.14
-  canFire: 1
+  canFire: 0
   muzzleFlashFPS: 30
   frames:
   - {fileID: 2800000, guid: b903492db4e935f42b0048b5be61efca, type: 3}
@@ -144,6 +144,7 @@ MonoBehaviour:
   - {fileID: 2800000, guid: 092f4e26922091148b8e243750b33da3, type: 3}
   - {fileID: 2800000, guid: 6619e6a88712f47dc9c1621a990dcebe, type: 3}
   muzzleFlash: {fileID: 4970373634077873064}
+  muzzleFlashMeshRenderer: {fileID: 0}
 --- !u!60 &7771361380167232139
 PolygonCollider2D:
   m_ObjectHideFlags: 0

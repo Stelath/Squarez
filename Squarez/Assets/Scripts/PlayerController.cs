@@ -40,8 +40,6 @@ public class PlayerController : MonoBehaviour
     public ParticleSystem deathEffect;
     public ParticleSystem jumpEffect;
 
-    bool usingKeyboard = false;
-
     private void Start()
     {
         // Set the players color
@@ -76,24 +74,8 @@ public class PlayerController : MonoBehaviour
     {
         isGrounded = Physics2D.OverlapCircle(groundCheck.position, checkRadius, whatIsGround);
 
-        if (Input.GetAxis("Horizontal") != 0)
-        {
-            usingKeyboard = true;
-        }
-        else if (Input.GetAxis("P1Horizontal") != 0)
-        {
-            usingKeyboard = false;
-        }
-
-        if (usingKeyboard && playerNumber == 1)
-        {
-            moveInput = Input.GetAxis("Horizontal");
-        }
-        else
-        {
         moveInput = Input.GetAxis("P" + playerNumber + "Horizontal");
-        }
-
+        
         rb.velocity = new Vector2(moveInput * speed, rb.velocity.y);
     }
 
@@ -132,20 +114,7 @@ public class PlayerController : MonoBehaviour
 
     public void HandleHandRotation()
     {
-        if (usingKeyboard && objectInHand != null)
-        {
-            Vector3 mousePosition = Input.mousePosition;
-            mousePosition = Camera.main.ScreenToWorldPoint(mousePosition);
-
-            Vector2 direction = new Vector2(
-                mousePosition.x - objectInHand.transform.position.x,
-                mousePosition.y - objectInHand.transform.position.y
-            );
-
-            objectInHand.transform.up = direction;
-            objectInHand.transform.eulerAngles = objectInHand.transform.eulerAngles + new Vector3(0, 0, 90);
-        }
-        else if (objectInHand != null)
+        if (objectInHand != null)
         {
             handRotationInputX = Input.GetAxis("P" + playerNumber + "HandHorizontal");
             handRotationInputY = Input.GetAxis("P" + playerNumber + "HandVertical");
@@ -218,7 +187,7 @@ public class PlayerController : MonoBehaviour
 
         if(playerHealth <= 0f)
         {
-            PlayerDeath();
+            PlayerDeath(false);
         }
 
         StartCoroutine(FlashWhite());
@@ -286,19 +255,21 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    public void PlayerDeath()
+    public void PlayerDeath(bool byLava)
     {
-
         var targets = Camera.main.GetComponent<CameraController>().targets;
         System.Collections.Generic.List<Transform> listOfTargets = new System.Collections.Generic.List<Transform>(targets);
         listOfTargets.Remove(gameObject.transform);
         Camera.main.GetComponent<CameraController>().targets = listOfTargets.ToArray();
 
-        // Show Player Death Effect
-        deathEffect.startColor = playerColor;
-        ParticleSystem instantiatedDeathEffect = Instantiate(deathEffect, gameObject.transform.position, gameObject.transform.rotation);
-        Destroy(instantiatedDeathEffect.gameObject, 2f);
-
+        if (!byLava)
+        {
+            // Show Player Death Effect
+            deathEffect.startColor = playerColor;
+            ParticleSystem instantiatedDeathEffect = Instantiate(deathEffect, gameObject.transform.position, gameObject.transform.rotation);
+            Destroy(instantiatedDeathEffect.gameObject, 2f);
+        }
+        
         var gameControllerScript = GameObject.FindGameObjectWithTag("GameController").GetComponent<GameController>();
 
         var livingPlayers = new GameObject[gameControllerScript.players.Length - 1];

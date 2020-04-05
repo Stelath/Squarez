@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MoveingBlocks : MonoBehaviour
+public class MoveingBlocksController : MonoBehaviour
 {
     public float direction = 0f;
     public float speed = 0f;

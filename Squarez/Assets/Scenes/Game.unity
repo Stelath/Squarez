@@ -332,6 +332,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 953d257ff71514fda905b050ba41c3e1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  lavaSplash: {fileID: 3253425857108105052, guid: 7d03cfac3be35a5449ff91fe8ea8c010,
+    type: 3}
 --- !u!61 &838091807
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -876,6 +878,8 @@ MonoBehaviour:
   - {fileID: 2302418044622293816, guid: 91bea60e76d25486ab86961f778111ae, type: 3}
   - {fileID: 6627971936660528298, guid: 352b7194e05434c638dd2c5e5d15e5e8, type: 3}
   - {fileID: 6158841760904881681, guid: bccba24598ce4443b8bdef157f7d0846, type: 3}
+  - {fileID: 1593724296149200651, guid: bfc26c1ed9c4e4302b934420fe1aa85d, type: 3}
+  - {fileID: 2610082425414496107, guid: 90972dd10686a4d0495d3c260d710f66, type: 3}
   guns:
   - {fileID: 8361929973172294562, guid: 2e6e2d989c93a4d10a07d052bd245f51, type: 3}
   - {fileID: 4970373633277607905, guid: 27e12526bb14ffc45beed2ecc0f90149, type: 3}

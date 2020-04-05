@@ -233,7 +233,7 @@ public class GameController : MonoBehaviour
         currentLevel = Instantiate(levels[currentLevelNumber], new Vector3((FindWidthOfLevel(lastLevel) / 2) + (FindWidthOfLevel(levels[currentLevelNumber]) / 2), 0, 0), transform.rotation);
         if (players.Length == 1)
         {
-            players[0].GetComponent<PlayerController>().PlayerDeath();
+            players[0].GetComponent<PlayerController>().PlayerDeath(false);
         }
 
         foreach (var bullet in GameObject.FindGameObjectsWithTag("Bullet"))

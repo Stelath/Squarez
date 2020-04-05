@@ -199,7 +199,7 @@ MonoBehaviour:
   amountOfBullets: 1
   firingForce: 30
   fireRate: 0.2
-  canFire: 1
+  canFire: 0
   muzzleFlashFPS: 30
   frames:
   - {fileID: 2800000, guid: 7258acc4bb643f241af4e931a0a8cc0a, type: 3}
