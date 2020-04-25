@@ -96,6 +96,7 @@ LightmapSettings:
     m_PVRFilteringAtrousPositionSigmaAO: 1
     m_ExportTrainingData: 0
     m_TrainingDataDestination: TrainingData
+    m_LightProbeSampleCountMultiplier: 4
   m_LightingDataAsset: {fileID: 0}
   m_UseShadowmask: 1
 --- !u!196 &4
@@ -374,6 +375,7 @@ SpriteRenderer:
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -879,7 +881,6 @@ MonoBehaviour:
   - {fileID: 6627971936660528298, guid: 352b7194e05434c638dd2c5e5d15e5e8, type: 3}
   - {fileID: 6158841760904881681, guid: bccba24598ce4443b8bdef157f7d0846, type: 3}
   - {fileID: 1593724296149200651, guid: bfc26c1ed9c4e4302b934420fe1aa85d, type: 3}
-  - {fileID: 2610082425414496107, guid: 90972dd10686a4d0495d3c260d710f66, type: 3}
   guns:
   - {fileID: 8361929973172294562, guid: 2e6e2d989c93a4d10a07d052bd245f51, type: 3}
   - {fileID: 4970373633277607905, guid: 27e12526bb14ffc45beed2ecc0f90149, type: 3}
