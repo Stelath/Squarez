@@ -19,7 +19,7 @@ public class LavaController : MonoBehaviour
             var gunController = objectCollidedWith.GetComponent<GunController>();
             var instLavaSplash = Instantiate(lavaSplash, objectCollidedWith.transform.position, new Quaternion(0, 0, 0, 0));
             Destroy(instLavaSplash.gameObject, 2f);
-            Destroy(gunController);
+            Destroy(gunController.gameObject);
         }
     }
 }
